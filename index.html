@@ -724,6 +724,52 @@
     <div class="modal-title" style="color: #1e90ff; font-size: 22px;">🛒 فروشگاه</div>
     
     <div class="shop-section">
+      <div class="section-title" style="color: #b980f0;">💵 خرید سکه</div>
+      
+      <div class="shop-item">
+        <div class="shop-item-info">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2">
+            <circle cx="12" cy="12" r="10" fill="#ffd700" stroke="#b8860b" stroke-width="1.5"/>
+            <text x="12" y="17" font-size="12" text-anchor="middle" fill="#8B4513" font-weight="bold" stroke="none">$</text>
+          </svg>
+          <span>۱۰۰ سکه</span>
+        </div>
+        <div>
+          <span class="shop-item-price" style="color: #2ecc71;">۵۰,۰۰۰ تومان</span>
+          <button class="shop-buy-coin" data-item="gold_100" style="background: #ffd700; color: #000;">خرید</button>
+        </div>
+      </div>
+      
+      <div class="shop-item">
+        <div class="shop-item-info">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2">
+            <circle cx="12" cy="12" r="10" fill="#ffd700" stroke="#b8860b" stroke-width="1.5"/>
+            <text x="12" y="17" font-size="12" text-anchor="middle" fill="#8B4513" font-weight="bold" stroke="none">$</text>
+          </svg>
+          <span>۲۰۰ سکه</span>
+        </div>
+        <div>
+          <span class="shop-item-price" style="color: #2ecc71;">۱۰۰,۰۰۰ تومان</span>
+          <button class="shop-buy-coin" data-item="gold_200" style="background: #ffd700; color: #000;">خرید</button>
+        </div>
+      </div>
+      
+      <div class="shop-item">
+        <div class="shop-item-info">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2">
+            <circle cx="12" cy="12" r="10" fill="#ffd700" stroke="#b8860b" stroke-width="1.5"/>
+            <text x="12" y="17" font-size="12" text-anchor="middle" fill="#8B4513" font-weight="bold" stroke="none">$</text>
+          </svg>
+          <span>۳۰۰ سکه</span>
+        </div>
+        <div>
+          <span class="shop-item-price" style="color: #2ecc71;">۱۵۰,۰۰۰ تومان</span>
+          <button class="shop-buy-coin" data-item="gold_300" style="background: #ffd700; color: #000;">خرید</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="shop-section">
       <div class="section-title" style="color: #b980f0;">🎁 خرید آیتم</div>
       <div class="shop-item">
         <div class="shop-item-info">
@@ -1091,16 +1137,19 @@
   function restoreGame() {
     if (loadGameState()) {
       if (cards.length > 0) {
+        // اگر صفحه برنده نمایش داده شده، آن را مخفی کن
         if (winOverlay.classList.contains('show')) {
           winOverlay.classList.remove('show');
         }
         renderBoard();
         updateGameUI();
         updateInventoryDisplay();
+        // فعال‌سازی بازی
         active = true;
         locked = false;
         modalOpen = false;
         isTimeOutMode = false;
+        // اگر تایمر وجود ندارد، آن را راه‌اندازی کن
         if (!timer) {
           timer = setInterval(() => {
             if (!active || modalOpen) return;
@@ -1467,6 +1516,7 @@
     mainMenu.style.display = 'none';
     gameContainer.classList.add('active');
     if (savedGameExists) {
+      // بازیابی بازی ذخیره شده
       restoreGame();
       updateUI();
       updateInventoryDisplay();
@@ -1507,10 +1557,14 @@
     document.getElementById('loadingScreen').classList.add('fade-out');
     setTimeout(() => {
       document.getElementById('loadingScreen').style.display = 'none';
+      // همیشه منو را نشان بده
       mainMenu.style.display = 'block';
+      // بررسی وجود داده‌های ذخیره شده
       const saved = loadGameState();
       if (saved && cards.length > 0) {
         savedGameExists = true;
+        // داده‌ها بارگذاری شدند، اما بازی را شروع نمی‌کنیم (منتظر کلیک کاربر هستیم)
+        // فقط UI را به‌روز می‌کنیم (سکه و قلب از قبل در loadData بارگذاری شده‌اند)
         updateUI();
         updateInventoryDisplay();
       } else {
