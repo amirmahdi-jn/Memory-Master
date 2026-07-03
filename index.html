@@ -732,10 +732,10 @@
             <circle cx="12" cy="12" r="10" fill="#ffd700" stroke="#b8860b" stroke-width="1.5"/>
             <text x="12" y="17" font-size="12" text-anchor="middle" fill="#8B4513" font-weight="bold" stroke="none">$</text>
           </svg>
-          <span>۱۰۰ سکه</span>
+          <span>۱۰۰ سکه (۵۰+)</span>
         </div>
         <div>
-          <span class="shop-item-price" style="color: #2ecc71;">۵۰,۰۰۰ تومان</span>
+          <span class="shop-item-price" style="color: #2ecc71;">۵۰,۰۰۰ تومان (۵۰٪)</span>
           <button class="shop-buy-coin" data-item="gold_100" style="background: #ffd700; color: #000;">خرید</button>
         </div>
       </div>
@@ -746,10 +746,10 @@
             <circle cx="12" cy="12" r="10" fill="#ffd700" stroke="#b8860b" stroke-width="1.5"/>
             <text x="12" y="17" font-size="12" text-anchor="middle" fill="#8B4513" font-weight="bold" stroke="none">$</text>
           </svg>
-          <span>۲۰۰ سکه</span>
+          <span>۲۰۰ سکه (۱۰۰+)</span>
         </div>
         <div>
-          <span class="shop-item-price" style="color: #2ecc71;">۱۰۰,۰۰۰ تومان</span>
+          <span class="shop-item-price" style="color: #2ecc71;">۱۰۰,۰۰۰ تومان (۵۰٪)</span>
           <button class="shop-buy-coin" data-item="gold_200" style="background: #ffd700; color: #000;">خرید</button>
         </div>
       </div>
@@ -760,10 +760,10 @@
             <circle cx="12" cy="12" r="10" fill="#ffd700" stroke="#b8860b" stroke-width="1.5"/>
             <text x="12" y="17" font-size="12" text-anchor="middle" fill="#8B4513" font-weight="bold" stroke="none">$</text>
           </svg>
-          <span>۳۰۰ سکه</span>
+          <span>۳۰۰ سکه (۱۵۰+)</span>
         </div>
         <div>
-          <span class="shop-item-price" style="color: #2ecc71;">۱۵۰,۰۰۰ تومان</span>
+          <span class="shop-item-price" style="color: #2ecc71;">۱۵۰,۰۰۰ تومان (۵۰٪)</span>
           <button class="shop-buy-coin" data-item="gold_300" style="background: #ffd700; color: #000;">خرید</button>
         </div>
       </div>
@@ -839,8 +839,8 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="difficultyConfirmModal"><div class="modal-content"><div class="modal-title">🔄 تغییر سطح کارت</div><div class="modal-text">آیا می‌خواهید سطح کارت را تغییر دهید؟<br>در صورت تغییر، ۱ قلب و ۵ سکه کسر می‌شود.</div><div class="modal-buttons"><button class="modal-btn confirm" id="difficultyConfirmYes">بله</button><button class="modal-btn cancel" id="difficultyConfirmNo">انصراف</button></div></div></div>
-<div class="modal-overlay" id="exitConfirmModal"><div class="modal-content"><div class="modal-title">↩️ بازگشت به منو</div><div class="modal-text">آیا می‌خواهید به منو بازگردید؟<br>در صورت بازگشت، ۱ قلب و ۵ سکه کسر می‌شود.</div><div class="modal-buttons"><button class="modal-btn confirm" id="exitConfirmYes">بله</button><button class="modal-btn cancel" id="exitConfirmNo">انصراف</button></div></div></div>
+<div class="modal-overlay" id="difficultyConfirmModal"><div class="modal-content"><div class="modal-title">🔄 تغییر سطح کارت</div><div class="modal-text">آیا می‌خواهید سطح کارت را تغییر دهید؟</div><div class="modal-buttons"><button class="modal-btn confirm" id="difficultyConfirmYes">بله</button><button class="modal-btn cancel" id="difficultyConfirmNo">انصراف</button></div></div></div>
+<div class="modal-overlay" id="exitConfirmModal"><div class="modal-content"><div class="modal-title">↩️ بازگشت به منو</div><div class="modal-text">آیا می‌خواهید به منو بازگردید؟</div><div class="modal-buttons"><button class="modal-btn confirm" id="exitConfirmYes">بله</button><button class="modal-btn cancel" id="exitConfirmNo">انصراف</button></div></div></div>
 
 <div class="modal-overlay" id="timeoutModal">
   <div class="modal-content">
@@ -1050,6 +1050,7 @@
   }
   
   function startGame(gridSize, useExistingSet = false, newSetIfTrue = false) {
+    localStorage.removeItem('gameState');
     size = gridSize;
     totalPairs = (size * size) / 2;
     matched = 0; moves = 0; flipped = [];
@@ -1067,15 +1068,9 @@
     timer = setInterval(() => {
       if(!active || modalOpen) return;
       if(timeLeft <= 1){
-        if(!firstGamePlayed){
-          timeLeft = 5;
-          updateGameUI();
-          return;
-        } else {
-          clearInterval(timer); timer = null;
-          active = false; locked = true;
-          showTimeoutModal();
-        }
+        clearInterval(timer); timer = null;
+        active = false; locked = true;
+        showTimeoutModal();
       } else {
         timeLeft--;
         updateGameUI();
@@ -1132,43 +1127,6 @@
   }
 
   function restoreGame() {
-    if (loadGameState()) {
-      if (cards.length > 0) {
-        if (winOverlay.classList.contains('show')) {
-          winOverlay.classList.remove('show');
-        }
-        renderBoard();
-        updateGameUI();
-        updateInventoryDisplay();
-        active = true;
-        locked = false;
-        modalOpen = false;
-        isTimeOutMode = false;
-        if (!timer) {
-          timer = setInterval(() => {
-            if (!active || modalOpen) return;
-            if (timeLeft <= 1) {
-              if (!firstGamePlayed) {
-                timeLeft = 5;
-                updateGameUI();
-                return;
-              } else {
-                clearInterval(timer);
-                timer = null;
-                active = false;
-                locked = true;
-                showTimeoutModal();
-              }
-            } else {
-              timeLeft--;
-              updateGameUI();
-            }
-            saveGameState();
-          }, 1000);
-        }
-        return true;
-      }
-    }
     return false;
   }
 
@@ -1183,8 +1141,9 @@
       timer = setInterval(() => {
         if(!active || modalOpen) return;
         if(timeLeft <= 1){
-          if(!firstGamePlayed){ timeLeft = 5; updateGameUI(); return; }
-          else { clearInterval(timer); timer = null; active = false; locked = true; showTimeoutModal(); }
+          clearInterval(timer); timer = null;
+          active = false; locked = true;
+          showTimeoutModal();
         } else { timeLeft--; updateGameUI(); }
         saveGameState();
       }, 1000);
@@ -1219,8 +1178,9 @@
       timer = setInterval(() => {
         if(!active || modalOpen) return;
         if(timeLeft <= 1){
-          if(!firstGamePlayed){ timeLeft = 5; updateGameUI(); return; }
-          else { clearInterval(timer); timer = null; active = false; locked = true; showTimeoutModal(); }
+          clearInterval(timer); timer = null;
+          active = false; locked = true;
+          showTimeoutModal();
         } else { timeLeft--; updateGameUI(); }
         saveGameState();
       }, 1000);
@@ -1281,21 +1241,23 @@
   function resumeGame(){
     if(!active) return;
     if(timer) clearInterval(timer);
+    if(timeLeft <= 1){
+      locked = true; modalOpen = false;
+      showTimeoutModal();
+      return;
+    }
     locked = false; modalOpen = false;
     timer = setInterval(() => {
       if(!active || modalOpen) return;
       if(timeLeft <= 1){
-        if(!firstGamePlayed){ timeLeft = 5; updateGameUI(); return; }
-        else { clearInterval(timer); timer = null; active = false; locked = true; showTimeoutModal(); }
+        clearInterval(timer); timer = null;
+        active = false; locked = true;
+        showTimeoutModal();
       } else { timeLeft--; updateGameUI(); }
       saveGameState();
     }, 1000);
   }
-  function applyPenaltyIfNeeded(callback){
-    if(!firstGamePlayed){ callback(); return true; }
-    else if(hearts >= 1 && coins >= 5){ hearts--; coins -= 5; save(); updateUI(); callback(); return true; }
-    else return false;
-  }
+
   function showInsufficientModalForAction(){
     pauseGame();
     const modal = document.getElementById('insufficientModal');
@@ -1321,19 +1283,22 @@
       let newSize = parseInt(btn.dataset.size);
       let curSize = parseInt(document.querySelector('.diff-btn.active').dataset.size);
       if(newSize === curSize) return;
-      if(!firstGamePlayed){ changeDifficultyAndRestart(newSize); }
-      else if(active && !isTimeOutMode){
-        if(hearts >= 1 && coins >= 5){ window.pendingDiffChange = newSize; pauseGame(); document.getElementById('difficultyConfirmModal').classList.add('show'); }
-        else showInsufficientModalForAction();
-      } else changeDifficultyAndRestart(newSize);
+      if(active && !isTimeOutMode){
+        window.pendingDiffChange = newSize;
+        pauseGame();
+        document.getElementById('difficultyConfirmModal').classList.add('show');
+      } else {
+        changeDifficultyAndRestart(newSize);
+      }
     });
   });
   document.getElementById('difficultyConfirmYes').onclick = () => {
     document.getElementById('difficultyConfirmModal').classList.remove('show');
     if(window.pendingDiffChange){
-      const success = applyPenaltyIfNeeded(() => { changeDifficultyAndRestart(window.pendingDiffChange); window.pendingDiffChange = null; modalOpen = false; isTimeOutMode = false; });
-      if(!success) showInsufficientModalForAction();
+      changeDifficultyAndRestart(window.pendingDiffChange);
       window.pendingDiffChange = null;
+      modalOpen = false;
+      isTimeOutMode = false;
     } else if(active && !isTimeOutMode) resumeGame();
   };
   document.getElementById('difficultyConfirmNo').onclick = () => {
@@ -1343,6 +1308,7 @@
   };
   function exitToMenu(){
     if(active){ clearInterval(timer); timer = null; active = false; }
+    localStorage.removeItem('gameState');
     gameContainer.classList.remove('active');
     mainMenu.style.display = 'block';
     modalOpen = false; isTimeOutMode = false;
@@ -1350,16 +1316,16 @@
   }
   const backBtn = document.getElementById('backToMenuBtn');
   backBtn.onclick = () => {
-    if(!firstGamePlayed) exitToMenu();
-    else if(active && !isTimeOutMode){
-      if(hearts >= 1 && coins >= 5){ pauseGame(); document.getElementById('exitConfirmModal').classList.add('show'); }
-      else showInsufficientModalForAction();
-    } else exitToMenu();
+    if(active && !isTimeOutMode){
+      pauseGame();
+      document.getElementById('exitConfirmModal').classList.add('show');
+    } else {
+      exitToMenu();
+    }
   };
   document.getElementById('exitConfirmYes').onclick = () => {
     document.getElementById('exitConfirmModal').classList.remove('show');
-    const success = applyPenaltyIfNeeded(() => exitToMenu());
-    if(!success) showInsufficientModalForAction();
+    exitToMenu();
   };
   document.getElementById('exitConfirmNo').onclick = () => {
     document.getElementById('exitConfirmModal').classList.remove('show');
@@ -1368,12 +1334,26 @@
   document.getElementById('timeoutContinueBtn').onclick = () => { if(coins >= 5) continueWithCoins(); else { pauseGame(); const insModal = document.getElementById('insufficientCoinsModal'); insModal.classList.add('show'); const goShop = document.getElementById('insufficientCoinsGoShop'); const cancel = document.getElementById('insufficientCoinsCancel'); const closeModal = () => { insModal.classList.remove('show'); goShop.removeEventListener('click', goHandler); cancel.removeEventListener('click', cancelHandler); if(isTimeOutMode && !active) showTimeoutModal(); }; const goHandler = () => { closeModal(); document.getElementById('shopModal').classList.add('show'); }; const cancelHandler = () => { closeModal(); if(isTimeOutMode && !active) showTimeoutModal(); }; goShop.addEventListener('click', goHandler); cancel.addEventListener('click', cancelHandler); } };
   document.getElementById('timeoutUseBoostBtn').onclick = () => useTimeBoostFromModal();
   document.getElementById('timeoutShopBtn').onclick = () => { document.getElementById('timeoutModal').classList.remove('show'); document.getElementById('shopModal').classList.add('show'); const checkClose = setInterval(() => { if(!document.getElementById('shopModal').classList.contains('show')){ clearInterval(checkClose); if(isTimeOutMode && !active) showTimeoutModal(); } }, 200); };
+  
+  // ---------- نمایش تأیید خرید با اطلاعات تخفیف و هدیه ----------
   function showPurchaseConfirm(item, cost, name) {
     pauseGame();
-    document.getElementById('purchaseModalText').innerHTML = `آیا مایل به خرید ${name} هستید؟`;
+    let displayText = '';
+    if (item === 'gold_100') {
+      displayText = 'آیا مایل به خرید ۱۰۰ سکه به قیمت ۲۵,۰۰۰ تومان هستید؟';
+    } else if (item === 'gold_200') {
+      displayText = 'آیا مایل به خرید ۲۰۰ سکه به قیمت ۵۰,۰۰۰ تومان هستید؟';
+    } else if (item === 'gold_300') {
+      displayText = 'آیا مایل به خرید ۳۰۰ سکه به قیمت ۷۵,۰۰۰ تومان هستید؟';
+    } else {
+      displayText = `آیا مایل به خرید ${name} هستید؟`;
+    }
+    // قرار دادن متن در یک span با فونت کوچک‌تر (12px)
+    document.getElementById('purchaseModalText').innerHTML = `<span style="font-size: 12px;">${displayText}</span>`;
     window.pendingPurchase = { item, cost };
     document.getElementById('confirmPurchaseModal').classList.add('show');
   }
+
   document.getElementById('confirmPurchaseYes').onclick = () => {
     document.getElementById('confirmPurchaseModal').classList.remove('show');
     if(window.pendingPurchase){
@@ -1436,9 +1416,10 @@
       tokenStatus.textContent = '✅ ' + result.message;
       tokenStatus.className = 'token-status success';
       let addCoins = 0;
-      if (type === 'gold_100') addCoins = 100;
-      else if (type === 'gold_200') addCoins = 200;
-      else if (type === 'gold_300') addCoins = 300;
+      // اعمال هدیه
+      if (type === 'gold_100') addCoins = 100 + 50;
+      else if (type === 'gold_200') addCoins = 200 + 100;
+      else if (type === 'gold_300') addCoins = 300 + 150;
       coins += addCoins;
       markTokenUsed(token);
       save();
@@ -1504,19 +1485,11 @@
   document.getElementById('closeInfoBtn').onclick = () => { infoModalElem.classList.remove('show'); if(active && !isTimeOutMode) resumeGame(); };
   
   // ---------- مدیریت شروع بازی (از منو) ----------
-  let savedGameExists = false;
-
   document.getElementById('startGameBtn').onclick = () => {
     mainMenu.style.display = 'none';
     gameContainer.classList.add('active');
-    if (savedGameExists) {
-      restoreGame();
-      updateUI();
-      updateInventoryDisplay();
-    } else {
-      let diff = parseInt(document.querySelector('.diff-btn.active').dataset.size);
-      startGame(diff, false, true);
-    }
+    let diff = parseInt(document.querySelector('.diff-btn.active').dataset.size);
+    startGame(diff, false, true);
   };
 
   document.getElementById('shopMenuBtn').onclick = () => shopModal.classList.add('show');
@@ -1551,15 +1524,9 @@
     setTimeout(() => {
       document.getElementById('loadingScreen').style.display = 'none';
       mainMenu.style.display = 'block';
-      const saved = loadGameState();
-      if (saved && cards.length > 0) {
-        savedGameExists = true;
-        updateUI();
-        updateInventoryDisplay();
-      } else {
-        savedGameExists = false;
-        updateUI();
-      }
+      localStorage.removeItem('gameState');
+      updateUI();
+      updateInventoryDisplay();
     }, 400);
   });
 
