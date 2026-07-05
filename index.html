@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<title>بازی استاد حافظه</title>
+<title>استاد حافظه</title>
 <style>
   :root {
     --primary: #00f2fe;
@@ -735,7 +735,7 @@
           <span>۱۰۰ سکه (۵۰+)</span>
         </div>
         <div>
-          <span class="shop-item-price" style="color: #2ecc71;">۵۰,۰۰۰ تومان (۵۰٪)</span>
+          <span class="shop-item-price" style="color: #2ecc71;">۱۵,۰۰۰ تومان (۵۰٪)</span>
           <button class="shop-buy-coin" data-item="gold_100" style="background: #ffd700; color: #000;">خرید</button>
         </div>
       </div>
@@ -749,7 +749,7 @@
           <span>۲۰۰ سکه (۱۰۰+)</span>
         </div>
         <div>
-          <span class="shop-item-price" style="color: #2ecc71;">۱۰۰,۰۰۰ تومان (۵۰٪)</span>
+          <span class="shop-item-price" style="color: #2ecc71;">۳۰,۰۰۰ تومان (۵۰٪)</span>
           <button class="shop-buy-coin" data-item="gold_200" style="background: #ffd700; color: #000;">خرید</button>
         </div>
       </div>
@@ -763,7 +763,7 @@
           <span>۳۰۰ سکه (۱۵۰+)</span>
         </div>
         <div>
-          <span class="shop-item-price" style="color: #2ecc71;">۱۵۰,۰۰۰ تومان (۵۰٪)</span>
+          <span class="shop-item-price" style="color: #2ecc71;">۴۵,۰۰۰ تومان (۵۰٪)</span>
           <button class="shop-buy-coin" data-item="gold_300" style="background: #ffd700; color: #000;">خرید</button>
         </div>
       </div>
@@ -1340,11 +1340,11 @@
     pauseGame();
     let displayText = '';
     if (item === 'gold_100') {
-      displayText = 'آیا مایل به خرید ۱۰۰ سکه به قیمت ۲۵,۰۰۰ تومان هستید؟';
+      displayText = 'آیا مایل به خرید ۱۰۰ سکه به قیمت ۱۵,۰۰۰ تومان هستید؟';
     } else if (item === 'gold_200') {
-      displayText = 'آیا مایل به خرید ۲۰۰ سکه به قیمت ۵۰,۰۰۰ تومان هستید؟';
+      displayText = 'آیا مایل به خرید ۲۰۰ سکه به قیمت ۳۰,۰۰۰ تومان هستید؟';
     } else if (item === 'gold_300') {
-      displayText = 'آیا مایل به خرید ۳۰۰ سکه به قیمت ۷۵,۰۰۰ تومان هستید؟';
+      displayText = 'آیا مایل به خرید ۳۰۰ سکه به قیمت ۴۵,۰۰۰ تومان هستید؟';
     } else {
       displayText = `آیا مایل به خرید ${name} هستید؟`;
     }
@@ -1387,9 +1387,9 @@
       const item = btn.dataset.item;
       if(item === 'time_boost') showPurchaseConfirm('time_boost', 10, 'زمان اضافه (+۵ ثانیه) به قیمت ۱۰ سکه');
       else if(item === 'heart_boost') showPurchaseConfirm('heart_boost', 5, 'قلب اضافه (۱ عدد) به قیمت ۵ سکه');
-      else if(item === 'gold_100') showPurchaseConfirm('gold_100', 0, '۱۰۰ سکه به قیمت ۵۰,۰۰۰ تومان');
-      else if(item === 'gold_200') showPurchaseConfirm('gold_200', 0, '۲۰۰ سکه به قیمت ۱۰۰,۰۰۰ تومان');
-      else if(item === 'gold_300') showPurchaseConfirm('gold_300', 0, '۳۰۰ سکه به قیمت ۱۵۰,۰۰۰ تومان');
+      else if(item === 'gold_100') showPurchaseConfirm('gold_100', 0, '۱۰۰ سکه به قیمت ۱۵,۰۰۰ تومان');
+      else if(item === 'gold_200') showPurchaseConfirm('gold_200', 0, '۲۰۰ سکه به قیمت ۳۰,۰۰۰ تومان');
+      else if(item === 'gold_300') showPurchaseConfirm('gold_300', 0, '۳۰۰ سکه به قیمت ۴۵,۰۰۰ تومان');
     };
   });
   
